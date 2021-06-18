@@ -9,6 +9,7 @@ services:
       - 9090:9090
     command: >
       bash -c "python manage.py migrate
+      && python manage.py collectstatic --noinput
       && uvicorn fampay.asgi:application --reload --host 0.0.0.0 --port 9090"
     depends_on:
       db:
