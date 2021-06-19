@@ -10,3 +10,4 @@ uvicorn==0.14.0
 ipython==7.24.1
 redis==3.5.3
 djangorestframework==3.12.4
+django-filter==2.4.0

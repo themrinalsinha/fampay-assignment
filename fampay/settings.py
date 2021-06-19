@@ -141,6 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SEARCH_QUERY      = env.get_value('SEARCH_QUERY')
 QUERY_PER_PAGE    = env.get_value('QUERY_PER_PAGE')
 REFRESH_FREQUENCY = env.get_value('REFRESH_FREQUENCY')
+YT_POLLING_STATUS = True
 
 
 # Celery settings

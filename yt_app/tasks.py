@@ -16,6 +16,9 @@ def _get_key():
 def fetch_data(pageToken: str = "", search_query: str = None) -> Tuple[bool, Dict]:
     "Helper function to fetch data from youtube API"
 
+    if not settings.YT_POLLING_STATUS:
+        return False, 'Polling disabled - check settings'
+
     BASE_URL = "https://www.googleapis.com/youtube/v3/search/"
 
     KEY = _get_key()
