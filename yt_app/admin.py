@@ -17,3 +17,4 @@ class KeyManagerAdmin(admin.ModelAdmin):
 @admin.register(YoutubeFeed)
 class YoutubeFeedAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'published_at')
+    search_fields = ('title', 'description')

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from os      import environ
 from pathlib import Path, PosixPath
 from environ import Env
 
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 LOCAL_APPS = [
@@ -134,5 +137,15 @@ STATIC_ROOT = PosixPath(BASE_DIR, 'static').resolve()
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SEARCH_QUERY = env.get_value('SEARCH_QUERY')
-QUERY_PER_PAGE = env.get_value('QUERY_PER_PAGE')
+SEARCH_QUERY      = env.get_value('SEARCH_QUERY')
+QUERY_PER_PAGE    = env.get_value('QUERY_PER_PAGE')
+REFRESH_FREQUENCY = env.get_value('REFRESH_FREQUENCY')
+
+
+# Celery settings
+CELERY_BEAT_SCHEDULER       = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_TIMEZONE             = TIME_ZONE
+CELERY_ENABLE_UTC           = False
+DJANGO_CELERY_BEAT_TZ_AWARE = False
+CELERY_BROKER_URL           = 'redis://redis/0'
+CELERY_RESULT_BACKEND       = 'django-db'

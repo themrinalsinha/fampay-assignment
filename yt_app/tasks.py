@@ -3,6 +3,7 @@ from requests    import Session
 from django.db   import IntegrityError
 from django.conf import settings
 
+from .celery     import app
 from .models     import YoutubeFeed
 
 
@@ -10,7 +11,8 @@ def _get_key():
     # TODO: add key rotation
     return 'AIzaSyA06wApcx_E8eTFwaCCwWoXeMCtLEKFa9M'
 
-def _fetch_data(pageToken: str = "", search_query: str = None) -> Tuple[bool, Dict]:
+@app.task
+def fetch_data(pageToken: str = "", search_query: str = None) -> Tuple[bool, Dict]:
     "Helper function to fetch data from youtube API"
 
     BASE_URL = "https://www.googleapis.com/youtube/v3/search/"
