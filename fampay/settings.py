@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'django_celery_beat',
     'django_celery_results',
+    'rest_framework',
 ]
 
 LOCAL_APPS = [
@@ -149,3 +150,9 @@ CELERY_ENABLE_UTC           = False
 DJANGO_CELERY_BEAT_TZ_AWARE = False
 CELERY_BROKER_URL           = 'redis://redis/0'
 CELERY_RESULT_BACKEND       = 'django-db'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
+}

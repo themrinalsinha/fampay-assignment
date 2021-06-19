@@ -4,12 +4,13 @@ from django.db   import IntegrityError
 from django.conf import settings
 
 from .celery     import app
-from .models     import YoutubeFeed
+from .models     import KeyManager, KeyStatus, YoutubeFeed
 
 
 def _get_key():
-    # TODO: add key rotation
-    return 'AIzaSyA06wApcx_E8eTFwaCCwWoXeMCtLEKFa9M'
+    # TODO: add key rotation using redis
+    _key = KeyManager.objects.filter(status=KeyStatus.ACTIVE).first()
+    return _key and _key.access_key or None
 
 @app.task
 def fetch_data(pageToken: str = "", search_query: str = None) -> Tuple[bool, Dict]:
@@ -63,5 +64,15 @@ def fetch_data(pageToken: str = "", search_query: str = None) -> Tuple[bool, Dic
                 # _next_page = _data.get("prevPageToken", None)
                 # if _next_page:
                 #     yield _fetch_data(_next_page)
+
+            elif response.status_code == 403:
+                KeyManager.objects.filter(key=KEY).update(
+                    status=KeyStatus.QUOTA_EXHAUSTED
+                )
+                return False, _data
+
             else:
+                KeyManager.objects.filter(key=KEY).update(
+                    status=KeyStatus.DEACTIVATED
+                )
                 return False, _data
