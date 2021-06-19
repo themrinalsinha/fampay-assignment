@@ -21,3 +21,6 @@ stop:
 
 psql:
 	@docker-compose exec db psql -U fampay
+
+user:
+	@docker-compose exec webapp python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@fampay.in', 'admin')"
