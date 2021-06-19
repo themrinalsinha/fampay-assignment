@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models        import KeyManager
+from .models        import KeyManager, YoutubeFeed
 from .utils         import mask_access_key
 
 admin.site.site_header = "Fampay Admin Panel"
@@ -13,3 +13,7 @@ class KeyManagerAdmin(admin.ModelAdmin):
 
     def _access_key(self, obj):
         return mask_access_key(obj.access_key)
+
+@admin.register(YoutubeFeed)
+class YoutubeFeedAdmin(admin.ModelAdmin):
+    list_display = ('title', 'description', 'published_at')

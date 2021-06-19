@@ -133,3 +133,6 @@ STATIC_ROOT = PosixPath(BASE_DIR, 'static').resolve()
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SEARCH_QUERY = env.get_value('SEARCH_QUERY')
+QUERY_PER_PAGE = env.get_value('QUERY_PER_PAGE')

@@ -1,4 +1,5 @@
-from django.db import models
+from django.db                       import models
+from django.contrib.postgres.indexes import HashIndex, BTreeIndex
 
 
 class KeyStatus(models.TextChoices):
@@ -25,3 +26,26 @@ class KeyManager(BaseModel):
     class Meta:
         verbose_name        = "Key Manager"
         verbose_name_plural = "Key Manager"
+
+
+class YoutubeFeed(BaseModel):
+    video_id     = models.CharField(max_length=128, unique=True)
+    title        = models.CharField(max_length=128)
+    description  = models.TextField()
+    thumbnails   = models.JSONField()
+    published_at = models.DateTimeField()
+    meta_info    = models.JSONField(blank=True, null=True)
+
+    def __str__(self) -> str:
+        return f"YoutubeFeed({self.title})"
+
+    class Meta:
+        indexes = (
+            BTreeIndex(fields=('video_id',)),
+            BTreeIndex(fields=('title',)),
+            HashIndex(fields=('description',))
+        )
+
+        ordering            = ('-published_at',)
+        verbose_name        = "YouTube Feed"
+        verbose_name_plural = "YouTube Feed(s)"

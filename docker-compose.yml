@@ -7,6 +7,9 @@ services:
       - .:/app
     ports:
       - 9090:9090
+    environment:
+      - SEARCH_QUERY='cricket' # Hardcoded search query
+      - QUERY_PER_PAGE=20
     command: >
       bash -c "python manage.py migrate
       && python manage.py collectstatic --noinput
@@ -33,6 +36,11 @@ services:
     image: brainsam/pgbouncer
     env_file:
       - ./config/local.env
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6370:6379
 
 volumes:
   postgres_data:
